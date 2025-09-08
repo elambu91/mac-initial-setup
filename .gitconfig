@@ -1,0 +1,29 @@
+[alias]
+	a = add
+	co = checkout
+	ct = commit
+	cm = commit -m
+	st = status
+	br = branch
+	hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+	shist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short --max-count
+	type = cat-file -t
+	dump = cat-file -p
+	lazy = "!f() { git add -A && git commit -m  \"$1\"; }; f"  
+	cfeat =  "!f() { branch_name=\"$(git symbolic-ref --short -q HEAD)\"; desc=$(echo \"$branch_name\" | sed 's/^[^/]*\\/[^/]*\\/[^-]*-//'); git add -A && git commit -m  \"feat($desc): $1\"; }; f"
+	cfix = "!f() { branch_name=\"$(git symbolic-ref --short -q HEAD)\"; desc=$(echo \"$branch_name\" | sed 's/^[^/]*\\/[^/]*\\/[^-]*-//'); git add -A && git commit -m  \"fix($desc): $1\"; }; f"
+	cb = "!f() { branch_name=$(pbpaste | tr -d '\\n');  git co -b  \"$branch_name\"; }; f"
+	cbfix = "!f() { branch_name=$(pbpaste | tr -d '\\n'); desc=$(echo \"$branch_name\" | sed 's/^[^/]*\\/[^/]*\\/[^-]*-//' | tr '-' ' '); git checkout -b \"$branch_name\" && git add -A && git commit -m \"fix: $desc\"; }; f"
+	cbfeat = "!f() { branch_name=$(pbpaste | tr -d '\\n'); desc=$(echo \"$branch_name\" | sed 's/^[^/]*\\/[^/]*\\/[^-]*-//' | tr '-' ' '); git checkout -b \"$branch_name\" && git add -A && git commit -m \"feat: $desc\"; }; f"
+	pushu = "!f() { name=\"$(git symbolic-ref --short -q HEAD)\"; git push -u origin $name; }; f"
+	purge = "!f() { git branch | grep -v "main" | xargs git branch -D; }; f"
+
+[init]
+	defaultBranch = main
+[user]
+	name = Elam Buteil
+	email = username@company.com
+[core]
+	editor = nano
+[pull]
+	rebase = false
