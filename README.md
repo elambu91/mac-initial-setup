@@ -1,4 +1,4 @@
-# macOS Initial Setup Script
+# Elam's macOS Initial Setup Script
 
 An automated script to configure a new macOS system with MY favorite defaults and install commonly used development tools.
 
@@ -105,7 +105,7 @@ chmod +x mac-initial-setup.sh
 
 ## Important Notes
 
-- **Backup recommended**: While the script is designed to be safe, consider backing up your system before running
+- **USE AT YOUR OWN RISK**: While the script is designed to be safe, and you can see what is going to run in the script, use at your own risk. I am not responsible for where you run this.
 - **Sudo access**: Some operations may require administrator privileges
 - **Internet connection**: Required for downloading Homebrew and optional software
 - **Time required**: 10-30 minutes depending on selected software
