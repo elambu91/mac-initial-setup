@@ -1,6 +1,6 @@
 # macOS Initial Setup Script
 
-An automated script to configure a new macOS system with sensible defaults and install commonly used development tools.
+An automated script to configure a new macOS system with MY favorite defaults and install commonly used development tools.
 
 ## What it does
 
@@ -41,6 +41,31 @@ The script will prompt you to install each of these tools (default is Yes, just 
 - **Notion** - Note-taking and productivity app
 - **NVM (Node Version Manager)** - Node.js version management
 - **Python Essentials** (pyenv, pipx, poetry) - Python development tools
+- **Git Configuration** - Sets up your global Git settings with useful aliases
+
+### ⚙️ Git Configuration (Interactive)
+
+The script can automatically set up your global Git configuration with useful aliases and settings:
+
+- **Source Options**:
+  - **Default**: Uses the `.gitconfig` from this repository (includes many helpful aliases)
+  - **Local**: If you place a `.gitconfig` file in the same folder as the script, it will use that instead
+  - **Custom URL**: You can provide any URL to a `.gitconfig` file
+
+- **Personalization**: The script will prompt for:
+  - **Name** (default: "Elam Buteil")
+  - **Email** (required, no default)
+  - **Default branch** (default: "main")
+
+- **Included Aliases** (from the default configuration):
+  - `git a` → `git add`
+  - `git co` → `git checkout`
+  - `git cm` → `git commit -m`
+  - `git st` → `git status`
+  - `git br` → `git branch`
+  - `git lazy "message"` → `git add -A && git commit -m "message"`
+  - `git shist n` → Pretty formatted git log with graph (n is an integer of commits you want to see)
+  - And many more productivity aliases!
 
 ### 🖼️ Additional Features (Interactive)
 
@@ -115,6 +140,9 @@ The script is designed to be easily readable and modifiable. You can:
 - Comment out sections you don't want
 - Modify default settings by changing the `defaults write` commands
 - Add additional software to the installation prompts
+- **Custom Git Configuration**: 
+  - Place your own `.gitconfig` file in the same folder as the script to use it automatically
+  - Or provide a URL to any `.gitconfig` file when prompted during installation
 
 ## License
 

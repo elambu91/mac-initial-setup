@@ -161,9 +161,125 @@ fi
 echo ""
 echo "   ✅ Optional software installation complete"
 
+# Step 6: Configure Git settings
+echo ""
+echo "⚙️  Step 6: Configuring Git settings..."
+echo -n "   Configure Git settings (.gitconfig)? [Y/n]: "
+read -n 1 -r git_response
+echo  # Move to next line after keystroke
+
+# Default to yes if empty response
+if [[ -z "$git_response" || "$git_response" =~ ^[Yy]$ ]]; then
+    # Check for local .gitconfig first, then fallback to GitHub repo
+    LOCAL_GITCONFIG="$(dirname "$0")/.gitconfig"
+    GITHUB_GITCONFIG_URL="https://raw.githubusercontent.com/elambu91/mac-initial-setup/main/.gitconfig"
+    TEMP_GITCONFIG="/tmp/.gitconfig_temp"
+    
+    echo ""
+    echo "   Choose .gitconfig source:"
+    echo "   [1] Use default .gitconfig (recommended)"
+    echo "   [2] Provide custom .gitconfig URL"
+    echo -n "   Choice [1]: "
+    read -r config_choice
+    
+    # Default to choice 1 if empty
+    if [[ -z "$config_choice" ]]; then
+        config_choice="1"
+    fi
+    
+    if [[ "$config_choice" == "2" ]]; then
+        echo -n "   Enter .gitconfig URL: "
+        read -r custom_url
+        if [[ -n "$custom_url" ]]; then
+            GITCONFIG_SOURCE="$custom_url"
+            echo "   - Using custom .gitconfig from: $custom_url"
+        else
+            echo "   - No URL provided, using default"
+            GITCONFIG_SOURCE="default"
+        fi
+    else
+        GITCONFIG_SOURCE="default"
+    fi
+    
+    # Download or copy the gitconfig
+    if [[ "$GITCONFIG_SOURCE" == "default" ]]; then
+        if [[ -f "$LOCAL_GITCONFIG" ]]; then
+            echo "   - Found local .gitconfig, using it"
+            cp "$LOCAL_GITCONFIG" "$TEMP_GITCONFIG"
+        else
+            echo "   - Downloading default .gitconfig from GitHub..."
+            if curl -L "$GITHUB_GITCONFIG_URL" -o "$TEMP_GITCONFIG"; then
+                echo "   - Downloaded successfully"
+            else
+                echo "   ⚠️  Failed to download .gitconfig from GitHub"
+                echo "   ⏭️  Skipping Git configuration"
+                TEMP_GITCONFIG=""
+            fi
+        fi
+    else
+        echo "   - Downloading .gitconfig from custom URL..."
+        if curl -L "$GITCONFIG_SOURCE" -o "$TEMP_GITCONFIG"; then
+            echo "   - Downloaded successfully"
+        else
+            echo "   ⚠️  Failed to download .gitconfig from custom URL"
+            echo "   ⏭️  Skipping Git configuration"
+            TEMP_GITCONFIG=""
+        fi
+    fi
+    
+    # Configure git settings if we have a valid gitconfig
+    if [[ -n "$TEMP_GITCONFIG" && -f "$TEMP_GITCONFIG" ]]; then
+        echo ""
+        echo "   Enter your Git configuration details:"
+        
+        # Get user name (default: Elam Buteil)
+        echo -n "   Your name [Elam Buteil]: "
+        read -r git_name
+        if [[ -z "$git_name" ]]; then
+            git_name="Elam Buteil"
+        fi
+        
+        # Get user email (no default)
+        echo -n "   Your email: "
+        read -r git_email
+        while [[ -z "$git_email" ]]; do
+            echo -n "   Email is required. Your email: "
+            read -r git_email
+        done
+        
+        # Get default branch (default: main)
+        echo -n "   Default branch [main]: "
+        read -r git_branch
+        if [[ -z "$git_branch" ]]; then
+            git_branch="main"
+        fi
+        
+        echo "   - Configuring Git settings..."
+        
+        # Update the gitconfig with user's details
+        sed -i.bak "s/name = .*/name = $git_name/" "$TEMP_GITCONFIG"
+        sed -i.bak "s/email = .*/email = $git_email/" "$TEMP_GITCONFIG"
+        sed -i.bak "s/defaultBranch = .*/defaultBranch = $git_branch/" "$TEMP_GITCONFIG"
+        
+        # Copy to home directory
+        cp "$TEMP_GITCONFIG" "$HOME/.gitconfig"
+        
+        # Clean up
+        rm -f "$TEMP_GITCONFIG" "$TEMP_GITCONFIG.bak"
+        
+        echo "   ✅ Git configuration complete"
+        echo "      - Name: $git_name"
+        echo "      - Email: $git_email"
+        echo "      - Default branch: $git_branch"
+        echo "      - Custom aliases and settings applied"
+    fi
+else
+    echo "   ⏭️  Skipping Git configuration"
+fi
+
 # Download video background image
 echo ""
-echo "🖼️  Step 6: Downloading video background image..."
+echo "🖼️  Step 7: Downloading video background image..."
 echo -n "   Download video background image? [Y/n]: "
 read -n 1 -r download_response
 echo  # Move to next line after keystroke
@@ -195,8 +311,8 @@ else
     echo "   ⏭️  Skipping video background image download"
 fi
 
-# Step 7: Configure Chrome DevTools preferences
-echo "🌐 Step 7: Configuring Chrome DevTools preferences..."
+# Step 8: Configure Chrome DevTools preferences
+echo "🌐 Step 8: Configuring Chrome DevTools preferences..."
 
 # Ask user if they want to configure Chrome DevTools
 echo ""
@@ -277,6 +393,7 @@ echo "  ✅ Trackpad tap to click enabled"
 echo "  ✅ Homebrew installed and configured"
 echo "  ✅ Optional software installed (as selected)"
 echo "  ✅ Python essentials installed (as selected)"
+echo "  ✅ Git configuration applied (as selected)"
 echo "  ✅ Video background image downloaded (as selected)"
 echo "  ✅ Chrome DevTools custom devices added (as selected)"
 echo ""
@@ -285,6 +402,32 @@ echo "  - You may need to log out and back in for keyboard shortcuts to take eff
 echo "  - Dock changes are already active"
 echo "  - Chrome settings will take effect the next time you start Chrome"
 echo ""
-echo "🔄 To apply keyboard shortcut changes immediately, run:"
-echo "   sudo killall cfprefsd"
+echo "🔄 Apply keyboard shortcut changes immediately:"
+echo ""
+echo -n "   Run 'sudo killall cfprefsd' to apply keyboard shortcuts now? [Y/n]: "
+read -n 1 -r sudo_response
+echo  # Move to next line after keystroke
+
+# Default to yes if empty response
+if [[ -z "$sudo_response" || "$sudo_response" =~ ^[Yy]$ ]]; then
+    echo ""
+    echo "   ⚠️  This command requires administrator privileges"
+    echo "   📝 What it does: Forces macOS to reload system preferences"
+    echo "   🔑 You will be prompted for your password"
+    echo ""
+    echo "   - Running: sudo killall cfprefsd"
+    
+    if sudo killall cfprefsd; then
+        echo "   ✅ Keyboard shortcuts applied immediately"
+        echo "   📱 Your new shortcuts are now active!"
+    else
+        echo "   ⚠️  Failed to apply shortcuts immediately"
+        echo "   💡 You can run 'sudo killall cfprefsd' manually later"
+        echo "   🔄 Or log out and back in to apply the changes"
+    fi
+else
+    echo "   ⏭️  Skipping immediate keyboard shortcut application"
+    echo "   💡 Keyboard shortcuts will take effect after logout/login"
+fi
+
 echo ""
