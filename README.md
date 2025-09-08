@@ -65,11 +65,19 @@ The script can automatically set up your global Git configuration with useful al
   - `git br` → `git branch`
   - `git lazy "message"` → `git add -A && git commit -m "message"`
   - `git shist n` → Pretty formatted git log with graph (n is an integer of commits you want to see)
+  - `git pushu` → push new branch that is currently checked out, instead of using git push -u origin branch-name, no need to specify branch name
+  - `git purge` → deletes ALL local branches except main! use with caution!!!!
+
+**Linear branch shortcuts:**
   - `git cfix/cfeat "message"` → like git lazy but formats the commit message like this:  `fix(branch-name): message` (or feat for feature)
   - `git cb` → checkout to a new branch based on whats in your clipboard (for instance if you copied branch name from linear/jira)
   - `git cbfix/cbfeat` → combines git cb with cfeat, creates a branch from your clipboard and then styles it differently for the description
-  - `git pushu` → push new branch that is currently checked out, instead of using git push -u origin branch-name, no need to specify branch name
-  - `git purge` → deletes ALL local branches except main! use with caution!!!!
+
+**Jira branch shortcuts:**
+  - `git jfix/jfeat "message"` → like git lazy but formats the commit message like this:  `fix(PM-000000): message` (or feat for feature), branch name needs to be formatted by git jcb
+  - `git jcb 000000 "name of branch"` → checkout to a new branch using jira ticket number, styled like "PM-000000-name-of-branch"
+  - `git jbfix/jbfeat` → combines both previous commands, creates a branch from your with jira ticket number and then styles it like git jfix/jfeat for the description
+
   - And many more productivity aliases!
 
 ### 🖼️ Additional Features (Interactive)
