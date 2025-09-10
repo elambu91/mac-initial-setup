@@ -10,10 +10,11 @@
 	type = cat-file -t
 	dump = cat-file -p
 	lazy = "!f() { git add -A && git commit -m  \"$1\"; }; f"  
-	cfeat =  "!f() { branch_name=\"$(git symbolic-ref --short -q HEAD)\"; desc=$(echo \"$branch_name\" | sed 's/^[^/]*\\/[^/]*\\/[^-]*-//'); git add -A && git commit -m  \"feat($desc): $1\"; }; f"
-	cfix = "!f() { branch_name=\"$(git symbolic-ref --short -q HEAD)\"; desc=$(echo \"$branch_name\" | sed 's/^[^/]*\\/[^/]*\\/[^-]*-//'); git add -A && git commit -m  \"fix($desc): $1\"; }; f"
+	cfeat =  "!f() { branch_name=\"$(git symbolic-ref --short -q HEAD)\"; ticket=$(echo \"$branch_name\" | grep -o 'core-[0-9][0-9]*'); desc=$(echo \"$branch_name\" | sed 's/.*core-[0-9][0-9]*-//' | tr '-' ' '); git add -A && git commit -m  \"feat($ticket): $desc - $1\"; }; f"
+	cfix = "!f() { branch_name=\"$(git symbolic-ref --short -q HEAD)\"; ticket=$(echo \"$branch_name\" | grep -o 'core-[0-9][0-9]*'); desc=$(echo \"$branch_name\" | sed 's/.*core-[0-9][0-9]*-//' | tr '-' ' '); git add -A && git commit -m  \"fix($ticket): $desc - $1\"; }; f"
 	cb = "!f() { branch_name=$(pbpaste | tr -d '\\n');  git co -b  \"$branch_name\"; }; f"
-	cbfix = "!f() { branch_name=$(pbpaste | tr -d '\\n'); desc=$(echo \"$branch_name\" | sed 's/^[^/]*\\/[^/]*\\/[^-]*-//' | tr '-' ' '); git checkout -b \"$branch_name\" && git add -A && git commit -m \"fix: $desc\"; }; f"
+	cbfix = "!f() { branch_name=$(pbpaste | tr -d '\\n'); ticket=$(echo \"$branch_name\" | grep -o 'core-[0-9][0-9]*'); desc=$(echo \"$branch_name\" | sed 's/.*core-[0-9][0-9]*-//' | tr '-' ' '); git checkout -b \"$branch_name\" || true; git add -A && git commit -m \"fix($ticket): $desc - $1\"; }; f"
+	cbfeat = "!f() { branch_name=$(pbpaste | tr -d '\\n'); ticket=$(echo \"$branch_name\" | grep -o 'core-[0-9][0-9]*'); desc=$(echo \"$branch_name\" | sed 's/.*core-[0-9][0-9]*-//' | tr '-' ' '); git checkout -b \"$branch_name\" || true; git add -A && git commit -m \"feat($ticket): $desc - $1\"; }; f"
 	cbfeat = "!f() { branch_name=$(pbpaste | tr -d '\\n'); desc=$(echo \"$branch_name\" | sed 's/^[^/]*\\/[^/]*\\/[^-]*-//' | tr '-' ' '); git checkout -b \"$branch_name\" && git add -A && git commit -m \"feat: $desc\"; }; f"
 	jfeat = "!f() { name=\"$(git symbolic-ref --short -q HEAD)\"; git add -A && git commit -m  \"feat(PM${name:2:6}): $1\"; }; f"
 	jfix = "!f() { name=\"$(git symbolic-ref --short -q HEAD)\"; git add -A && git commit -m  \"fix(PM${name:2:6}): $1\"; }; f"

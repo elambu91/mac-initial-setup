@@ -159,6 +159,9 @@ prompt_install "Google Chrome" "brew install --cask google-chrome"
 # Notion
 prompt_install "Notion" "brew install --cask notion"
 
+# Zoom
+prompt_install "Zoom" "brew install --cask zoom"
+
 # NVM (Node Version Manager)
 prompt_install "NVM (Node Version Manager)" "brew install nvm"
 
