@@ -38,6 +38,7 @@ echo "   - Enabling dock autohide"
 echo "   - Setting dock autohide delay to 0"
 echo "   - Setting dock autohide animation time to 0.4 seconds"
 echo "   - Disabling genie minimize animation (using scale effect)"
+echo "   - Enabling minimize windows into application icon"
 echo "   - Hiding recent apps in dock"
 echo "   - Setting dock size to 25%"
 echo "   - Setting dock magnification to 75%"
@@ -47,6 +48,7 @@ defaults write com.apple.dock autohide -bool true
 defaults write com.apple.dock autohide-delay -int 0
 defaults write com.apple.dock autohide-time-modifier -float 0.4
 defaults write com.apple.dock mineffect -string "scale"
+defaults write com.apple.dock minimize-to-application -bool true
 defaults write com.apple.dock show-recents -bool false
 defaults write com.apple.dock tilesize -float 45
 defaults write com.apple.dock magnification -bool true
@@ -67,8 +69,21 @@ defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
 
 echo "   ✅ Trackpad tap to click enabled"
 
-# Step 5: Configure Finder settings
-echo "📁 Step 5: Configuring Finder settings..."
+# Step 5: Configure window management settings
+echo "🪟 Step 5: Configuring window management settings..."
+echo "   - Disabling tiled window margins"
+echo "   - Setting double-click title bar action to Fill"
+
+# Disable tiled window margins (Stage Manager related)
+defaults write com.apple.WindowManager EnableTiledWindowMargins -bool false
+
+# Set double-click title bar action to Fill
+defaults write NSGlobalDomain AppleActionOnDoubleClick -string "Maximize"
+
+echo "   ✅ Window management settings configured"
+
+# Step 6: Configure Finder settings
+echo "📁 Step 6: Configuring Finder settings..."
 echo "   - Enabling file extensions in Finder"
 echo "   - Creating ~/projects folder if it doesn't exist"
 
@@ -89,8 +104,8 @@ killall Finder
 
 echo "   ✅ Finder settings configured and restarted"
 
-# Step 6: Install Homebrew and optional software
-echo "🍺 Step 6: Installing Homebrew and optional software..."
+# Step 7: Install Homebrew and optional software
+echo "🍺 Step 7: Installing Homebrew and optional software..."
 
 # Check if Homebrew is already installed
 if command -v brew &> /dev/null; then
@@ -186,9 +201,9 @@ fi
 echo ""
 echo "   ✅ Optional software installation complete"
 
-# Step 7: Configure Git settings
+# Step 8: Configure Git settings
 echo ""
-echo "⚙️  Step 7: Configuring Git settings..."
+echo "⚙️  Step 8: Configuring Git settings..."
 echo -n "   Configure Git settings (.gitconfig)? [Y/n]: "
 read -n 1 -r git_response
 echo  # Move to next line after keystroke
@@ -304,7 +319,7 @@ fi
 
 # Download video background image
 echo ""
-echo "🖼️  Step 8: Downloading video background image..."
+echo "🖼️  Step 9: Downloading video background image..."
 echo -n "   Download video background image? [Y/n]: "
 read -n 1 -r download_response
 echo  # Move to next line after keystroke
@@ -336,8 +351,8 @@ else
     echo "   ⏭️  Skipping video background image download"
 fi
 
-# Step 9: Configure Chrome DevTools preferences
-echo "🌐 Step 9: Configuring Chrome DevTools preferences..."
+# Step 10: Configure Chrome DevTools preferences
+echo "🌐 Step 10: Configuring Chrome DevTools preferences..."
 
 # Ask user if they want to configure Chrome DevTools
 echo ""
@@ -413,8 +428,9 @@ echo "📋 Summary of changes:"
 echo "  ✅ Language toggle: CMD+Space"
 echo "  ✅ Spotlight search: CTRL+Space"
 echo "  ✅ Lock screen: CMD+L"
-echo "  ✅ Dock settings configured (autohide, size, magnification, no recent apps)"
+echo "  ✅ Dock settings configured (autohide, size, magnification, minimize to app, no recent apps)"
 echo "  ✅ Trackpad tap to click enabled"
+echo "  ✅ Window management configured (no tiled margins, double-click title bar fills)"
 echo "  ✅ Finder configured (extensions shown, ~/projects folder created)"
 echo "  ✅ Homebrew installed and configured"
 echo "  ✅ Optional software installed (as selected)"

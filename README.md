@@ -18,13 +18,22 @@ This script automates the initial setup of a new MacBook by configuring system s
    - Removes auto-hide delay
    - Sets animation time to 0.4 seconds
    - Uses scale effect for minimizing (instead of genie)
+   - Enables minimize windows into application icon
    - Hides recent apps
    - Sets dock size to 25% with 75% magnification
 
 3. **Trackpad Settings**
    - Enables tap to click
 
-4. **Homebrew Installation**
+4. **Window Management Settings**
+   - Disables tiled window margins (cleaner window snapping)
+   - Sets double-click title bar action to Fill (maximize window)
+
+5. **Finder Settings**
+   - Shows file extensions for all files
+   - Creates ~/projects folder for development work
+
+6. **Homebrew Installation**
    - Installs Homebrew package manager
    - Configures PATH for both Intel and Apple Silicon Macs
 
@@ -39,6 +48,7 @@ The script will prompt you to install each of these tools (default is Yes, just 
 - **Git** - Version control system
 - **Google Chrome** - Web browser
 - **Notion** - Note-taking and productivity app
+- **Zoom** - Video conferencing application
 - **NVM (Node Version Manager)** - Node.js version management
 - **Python Essentials** (pyenv, pipx, poetry) - Python development tools
 - **Git Configuration** - Sets up your global Git settings with useful aliases
@@ -84,6 +94,7 @@ The script can automatically set up your global Git configuration with useful al
 
 - **Video Background Image** - Downloads a default background image for video calls
 - **Chrome DevTools Configuration** - Adds custom device presets for responsive design testing
+- **Keyboard Shortcut Application** - Option to immediately apply keyboard shortcuts with `sudo killall cfprefsd`
 
 ## How to run
 
@@ -126,19 +137,23 @@ chmod +x mac-initial-setup.sh
 
 ## What happens during installation
 
-1. The script will show progress for each step
+1. The script will show progress for each step with clear status messages
 2. For optional software, you'll be prompted with `[Y/n]` - just press Enter for Yes, or 'n' for No
 3. Some installations may show their own prompts (like Xcode Command Line Tools)
-4. Chrome will be quit automatically if DevTools configuration is selected
+4. Finder and Dock will restart automatically to apply new settings
+5. Chrome will be quit automatically if DevTools configuration is selected
+6. At the end, you'll be prompted to immediately apply keyboard shortcuts (requires password)
 
 ## Post-installation
 
 After the script completes:
 
-1. **Keyboard shortcuts**: May require logout/login to take effect, or run `sudo killall cfprefsd`
-2. **Dock changes**: Take effect immediately
-3. **Chrome settings**: Take effect next time Chrome starts
-4. **Python/Node environments**: May need terminal restart to use new PATH
+1. **Keyboard shortcuts**: Applied immediately if you chose the sudo option, otherwise require logout/login
+2. **Dock and Finder changes**: Take effect immediately (script restarts these services)
+3. **Window management**: Takes effect immediately for new windows
+4. **Chrome settings**: Take effect next time Chrome starts
+5. **Python/Node environments**: May need terminal restart to use new PATH
+6. **Git configuration**: Ready to use immediately with all aliases
 
 ## Troubleshooting
 
